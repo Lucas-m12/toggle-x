@@ -1,3 +1,7 @@
+import { EmailNotVerifiedError } from "../errors/email-not-verified";
+import { UserBlockedError } from "../errors/user-blocked";
+import { UserNotApprovedError } from "../errors/user-not-approved";
+
 export type UserStatus = 'pending' | 'active' | 'blocked';
 export type UserRole = 'admin' | 'moderator' | 'editor' | 'viewer';
 export type AuthType = 'internal' | 'external';
@@ -66,5 +70,25 @@ export class User {
 
   isActive(): boolean {
     return this.status === 'active' && this.emailVerified;
+  }
+
+  canLogin(): boolean {
+    if (this.status !== 'active') return false;
+    if (this.authType === 'internal') {
+      return this.emailVerified === true;
+    }
+    return true;
+  }
+
+  assertCanLogin(): void {
+    if (this.status === 'pending') {
+      throw new UserNotApprovedError();
+    }
+    if (this.status === 'blocked') {
+      throw new UserBlockedError();
+    }
+    if (this.authType === 'internal' && !this.emailVerified) {
+      throw new EmailNotVerifiedError();
+    }
   }
 }

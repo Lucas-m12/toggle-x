@@ -1,9 +1,11 @@
-import { projectRoutes } from "@/interfaces/http/routes/project";
+import * as routes from "@/interfaces/http/routes";
 import Fastify from "fastify";
 import { errorHandler } from "./middlewares/error-handler";
 
 const app = Fastify();
-app.register(projectRoutes);
+
+app.register(routes.projectRoutes);
+app.register(routes.authRoutes);
 
 app.setErrorHandler(errorHandler);
 

@@ -1,5 +1,8 @@
 import { AppError } from "@/core/errors/app-error";
+import { InvalidCredentialsError } from "@/core/errors/invalid-credentials";
 import { ProjectNameAlreadyExistsError } from "@/domain/projects/errors/project-name-already-exists";
+import { EmailNotVerifiedError } from "@/domain/user/errors/email-not-verified";
+import { ExternalAuthNotAllowedError } from "@/domain/user/errors/external-auth-not-allowed";
 import { UserAlreadyExistsError } from "@/domain/user/errors/user-already-exist";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 
@@ -15,6 +18,18 @@ export function errorHandler(
 
   if (error instanceof UserAlreadyExistsError) {
     return reply.status(409).send({ error: error.message });
+  }
+
+  if (error instanceof InvalidCredentialsError) {
+    return reply.status(401).send({ error: error.message });
+  }
+
+  if (error instanceof EmailNotVerifiedError) {
+    return reply.status(403).send({ error: error.message });
+  }
+
+  if (error instanceof ExternalAuthNotAllowedError) {
+    return reply.status(403).send({ error: error.message });
   }
 
   if (error instanceof AppError) {
