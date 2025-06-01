@@ -1,7 +1,10 @@
 import "dotenv/config";
+import { registerEventHandlers } from "./bootstrap-events";
 import { app } from "./infra/http/fastify";
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3333;
+
+registerEventHandlers();
 
 app
   .listen({ port: PORT })

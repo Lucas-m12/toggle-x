@@ -1,4 +1,5 @@
 import { RegisterUserUseCase } from '@/app/user/register-user-use-case';
+import { globalEventBus } from '@/core/events/global-event-bus';
 import { BcryptHasher } from '@/infra/auth/adapters/bcrypt-hasher';
 import { JwtTokenGenerator } from '@/infra/auth/adapters/jwt-generator';
 import { InternalAuthService } from '@/infra/auth/internal-auth-service';
@@ -12,5 +13,5 @@ export function makeRegisterUserUseCase(): RegisterUserUseCase {
 
   const authService = new InternalAuthService(hasher, jwt);
 
-  return new RegisterUserUseCase(userRepository, authService);
+  return new RegisterUserUseCase(userRepository, authService, globalEventBus);
 }
