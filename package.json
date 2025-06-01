@@ -1,0 +1,48 @@
+{
+  "name": "toggle-x",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "drizzle:generate": "drizzle-kit generate:pg",
+    "drizzle:push": "drizzle-kit push:pg",
+    "drizzle:studio": "drizzle-kit studio",
+    "test:unit:watch": "vitest --dir src --watch",
+    "test:unit": "vitest --dir src",
+    "test:integration": "vitest --dir tests/integration",
+    "test:e2e": "vitest --dir tests/e2e",
+    "start:dev": "tsx watch src/main.ts",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.43.1",
+    "fastify": "^5.3.3",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.1.5",
+    "pg": "^8.16.0",
+    "ulid": "^3.0.0",
+    "zod": "^3.25.28"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@types/node": "^22.15.21",
+    "@types/pg": "^8.15.2",
+    "@types/supertest": "^6.0.3",
+    "drizzle-kit": "^0.31.1",
+    "eslint": "^9.27.0",
+    "globals": "^16.2.0",
+    "supertest": "^7.1.1",
+    "testcontainers": "^10.28.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.0",
+    "vitest": "^3.1.4"
+  }
+}
