@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, beforeAll, afterAll, it, expect, afterEach } from 'vitest';
-import { GenericContainer, StartedTestContainer } from 'testcontainers';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
 import * as schema from '@/infra/db/schemas';
+import { drizzle } from 'drizzle-orm/node-postgres';
 import fs from 'node:fs';
 import path from 'node:path';
+import { Client } from 'pg';
+import { GenericContainer, StartedTestContainer } from 'testcontainers';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
+import { RegisterUserUseCase } from '@/app/user/register-user-use-case';
+import { InMemoryEventBus } from '@/core/events/in-memory-event-bus';
+import { UserAlreadyExistsError } from '@/domain/user/errors/user-already-exist';
 import { BcryptHasher } from '@/infra/auth/adapters/bcrypt-hasher';
 import { JwtTokenGenerator } from '@/infra/auth/adapters/jwt-generator';
-import { DrizzleUserRepository } from '@/infra/db/repositories/drizzle-user-repository';
 import { InternalAuthService } from '@/infra/auth/internal-auth-service';
-import { RegisterUserUseCase } from '@/app/user/register-user-use-case';
-import { UserAlreadyExistsError } from '@/domain/user/errors/user-already-exist';
+import { DrizzleUserRepository } from '@/infra/db/repositories/drizzle-user-repository';
 
 let container: StartedTestContainer;
 let client: Client;
@@ -66,7 +67,8 @@ describe('RegisterUserUseCase - Integration', () => {
       new BcryptHasher(),
       new JwtTokenGenerator(),
     );
-    const useCase = new RegisterUserUseCase(repo, auth);
+    const eventBus = new InMemoryEventBus();
+    const useCase = new RegisterUserUseCase(repo, auth, eventBus);
 
     await useCase.execute({
       tenantId: 'tenant-1',
@@ -87,7 +89,8 @@ describe('RegisterUserUseCase - Integration', () => {
       new BcryptHasher(),
       new JwtTokenGenerator(),
     );
-    const useCase = new RegisterUserUseCase(repo, auth);
+    const eventBus = new InMemoryEventBus();
+    const useCase = new RegisterUserUseCase(repo, auth, eventBus);
 
     await useCase.execute({
       tenantId: 'tenant-1',
