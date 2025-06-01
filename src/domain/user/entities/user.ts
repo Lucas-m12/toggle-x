@@ -1,3 +1,4 @@
+import { EmailAlreadyVerifiedError } from "../errors/email-already-verified";
 import { EmailNotVerifiedError } from "../errors/email-not-verified";
 import { UserBlockedError } from "../errors/user-blocked";
 import { UserNotApprovedError } from "../errors/user-not-approved";
@@ -29,11 +30,11 @@ export class User {
   public readonly authType: AuthType;
   public readonly password?: string;
   public readonly providerId?: string;
-  public readonly emailVerified: boolean;
+  public emailVerified: boolean;
   public readonly status: UserStatus;
   public readonly role: UserRole;
   public readonly createdAt: Date;
-  public readonly updatedAt: Date;
+  public updatedAt: Date;
 
   constructor(props: UserProps) {
     this.id = props.id;
@@ -90,5 +91,11 @@ export class User {
     if (this.authType === 'internal' && !this.emailVerified) {
       throw new EmailNotVerifiedError();
     }
+  }
+
+  markEmailAsVerified(): void {
+    if (this.emailVerified) throw new EmailAlreadyVerifiedError(); // já verificado, não precisa atualizar
+    this.emailVerified = true;
+    this.updatedAt = new Date();
   }
 }

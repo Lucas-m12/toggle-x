@@ -30,6 +30,14 @@ export class InMemoryUserRepository implements UserRepository {
     this.users.push(user);
   }
 
+  async verifyEmail(userId: string): Promise<void> {
+    const user = this.users.find((u) => u.id === userId);
+    if (user) {
+      user.emailVerified = true;
+      user.updatedAt = new Date();
+    }
+  }
+
   // útil em testes
   getAll(): User[] {
     return this.users;

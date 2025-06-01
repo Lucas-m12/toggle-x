@@ -1,10 +1,10 @@
 
 import { User } from '@/domain/user/entities/user';
 import { UserRepository } from '@/domain/user/repositories/user-repository';
-import { eq, and } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { users } from '../schemas/user';
 import { UserMapper } from '../mappers/user-mapper';
+import { users } from '../schemas/user';
 
 export class DrizzleUserRepository implements UserRepository {
   constructor(private readonly db: PostgresJsDatabase<{ users: typeof users }>) { }
@@ -42,4 +42,10 @@ export class DrizzleUserRepository implements UserRepository {
     await this.db.insert(users).values(input);
   }
 
+  async verifyEmail(userId: string): Promise<void> {
+    await this.db
+      .update(users)
+      .set({ emailVerified: true })
+      .where(eq(users.id, userId));
+  }
 }

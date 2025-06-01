@@ -5,4 +5,5 @@ export interface UserRepository {
   findByProviderId(tenantId: string, providerId: string): Promise<User | null>;
   findById(userId: string): Promise<User | null>;
   create(user: User): Promise<void>;
+  verifyEmail(userId: string): Promise<void>;
 }
