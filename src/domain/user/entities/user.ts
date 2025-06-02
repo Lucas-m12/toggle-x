@@ -28,7 +28,7 @@ export class User {
   public readonly name: string;
   public readonly email: string;
   public readonly authType: AuthType;
-  public readonly password?: string;
+  public password?: string;
   public readonly providerId?: string;
   public emailVerified: boolean;
   public readonly status: UserStatus;

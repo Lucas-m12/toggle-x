@@ -38,6 +38,14 @@ export class InMemoryUserRepository implements UserRepository {
     }
   }
 
+  async updatePassword(userId: string, hashedPassword: string): Promise<void> {
+    const user = this.users.find((u) => u.id === userId);
+    if (user) {
+      user.password = hashedPassword;
+      user.updatedAt = new Date();
+    }
+  }
+
   // útil em testes
   getAll(): User[] {
     return this.users;

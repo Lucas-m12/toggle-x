@@ -6,4 +6,5 @@ export interface UserRepository {
   findById(userId: string): Promise<User | null>;
   create(user: User): Promise<void>;
   verifyEmail(userId: string): Promise<void>;
+  updatePassword(userId: string, hashedPassword: string): Promise<void>;
 }

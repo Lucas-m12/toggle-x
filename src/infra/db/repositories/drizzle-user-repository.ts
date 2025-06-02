@@ -48,4 +48,11 @@ export class DrizzleUserRepository implements UserRepository {
       .set({ emailVerified: true })
       .where(eq(users.id, userId));
   }
+
+  async updatePassword(userId: string, hashedPassword: string): Promise<void> {
+    await this.db
+      .update(users)
+      .set({ password: hashedPassword })
+      .where(eq(users.id, userId));
+  }
 }
